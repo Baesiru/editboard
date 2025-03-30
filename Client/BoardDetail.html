@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="BoardDetail.css">
+    <script src="BoardDetail.js" defer></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h2 id="title" class="card-title"></h2>
+                <h5 id="username" class="card-subtitle mb-2 text-muted"></h5>
+                <p id="createdAt" class="card-text"></p>
+                <p id="content" class="card-text"></p>
+                <p id="viewCount" class="card-text"></p>
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="Board.html" class="btn btn-secondary">목록으로 돌아가기</a>
+                    <div>
+                        <button class="btn btn-primary" id="editButton">수정하기</button>
+                        <button class="btn btn-danger" id="deleteButton">삭제하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 댓글 목록 영역 -->
+    <div class="container mt-4">
+        <h4>댓글</h4>
+        <div id="commentList"></div>
+    </div>
+
+    <!-- 댓글 작성 폼 -->
+    <div class="container mt-3">
+        <h5>댓글 작성</h5>
+        <input type="text" id="commentUsername" class="form-control mb-2" placeholder="이름">
+        <input type="password" id="commentPassword" class="form-control mb-2" placeholder="비밀번호">
+        <textarea id="commentContent" class="form-control mb-2" placeholder="댓글을 입력하세요"></textarea>
+        <button class="btn btn-primary" id="submitComment">댓글 작성</button>
+    </div>
+
+    <!-- 비밀번호 확인 모달 -->
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="passwordModalLabel">비밀번호 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="password" id="password" class="form-control" placeholder="비밀번호를 입력하세요">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" id="confirmPassword">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

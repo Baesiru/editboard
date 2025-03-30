@@ -1,0 +1,36 @@
+/* 전체 페이지 중앙 정렬 */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 600px;
+    margin-top: 30px;
+}
+
+h2 {
+    text-align: center;
+}
+
+form {
+    margin-top: 20px;
+}
+
+form .form-label {
+    font-weight: bold;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+button {
+    width: 100%;
+    font-size: 16px;
+}
+
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+}

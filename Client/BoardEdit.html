@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 수정</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <link rel="stylesheet" href="BoardEdit.css">
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="BoardEdit.js" defer></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">게시글 수정</h2>
+    
+        <div id="passwordForm" class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password" required>
+            <button id="passwordCheckBtn" class="btn btn-primary mt-3">비밀번호 확인</button>
+        </div>
+    
+        <form id="boardForm" style="display:none;">
+            <div class="mb-3">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" required>
+            </div>
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <div id="content"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">수정하기</button>
+        </form>
+    
+        <a href="#" id="backToPost" class="btn btn-secondary mt-3">돌아가기</a>
+    </div>
+    
+</body>
+</html>
