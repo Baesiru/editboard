@@ -1,9 +1,6 @@
 package com.baesiru.editorboard.service;
 
-import com.baesiru.editorboard.dto.board.RequestBoard;
-import com.baesiru.editorboard.dto.board.RequestBoardInfo;
-import com.baesiru.editorboard.dto.board.ResponseBoard;
-import com.baesiru.editorboard.dto.board.ResponseBoards;
+import com.baesiru.editorboard.dto.board.*;
 import com.baesiru.editorboard.entity.Board;
 import com.baesiru.editorboard.entity.Image;
 import com.baesiru.editorboard.repository.BoardRepository;
@@ -84,16 +81,16 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long id, RequestBoard requestBoard) {
+    public void updateBoard(Long id, RequestBoardEdit requestBoardEdit) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
             throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
         Board newBoard = board.get();
-        if (!newBoard.getPassword().equals(requestBoard.getPassword())) {
+        if (!newBoard.getPassword().equals(requestBoardEdit.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        newBoard.setTitle(requestBoard.getTitle());
-        newBoard.setContent(requestBoard.getContent());
+        newBoard.setTitle(requestBoardEdit.getTitle());
+        newBoard.setContent(requestBoardEdit.getContent());
         newBoard.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(newBoard);
 

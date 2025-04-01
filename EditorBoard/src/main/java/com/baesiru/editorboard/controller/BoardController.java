@@ -1,10 +1,8 @@
 package com.baesiru.editorboard.controller;
 
-import com.baesiru.editorboard.dto.board.RequestBoard;
-import com.baesiru.editorboard.dto.board.RequestBoardInfo;
-import com.baesiru.editorboard.dto.board.ResponseBoard;
-import com.baesiru.editorboard.dto.board.ResponseBoards;
+import com.baesiru.editorboard.dto.board.*;
 import com.baesiru.editorboard.service.BoardService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +21,7 @@ public class BoardController {
     }
 
     @PostMapping("/api/board")
-    public ResponseEntity<Object> createBoard(@RequestBody RequestBoard requestBoard) {
+    public ResponseEntity<Object> createBoard(@RequestBody @Valid RequestBoard requestBoard) {
         boardService.createBoard(requestBoard);
         return ResponseEntity.ok("게시글이 성공적으로 작성되었습니다.");
     }
@@ -35,20 +33,20 @@ public class BoardController {
     }
 
     @PostMapping("/api/board/{id}/delete")
-    public ResponseEntity<Object> deleteBoard(@PathVariable Long id, @RequestBody RequestBoardInfo requestBoardInfo) {
+    public ResponseEntity<Object> deleteBoard(@PathVariable Long id, @RequestBody @Valid RequestBoardInfo requestBoardInfo) {
         boardService.deleteBoard(id, requestBoardInfo);
         return ResponseEntity.ok("게시글이 삭제되었습니다.");
     }
 
     @PostMapping("/api/board/{id}/check")
-    public ResponseEntity<Object> checkPassword(@PathVariable Long id, @RequestBody RequestBoardInfo requestBoardInfo) {
+    public ResponseEntity<Object> checkPassword(@PathVariable Long id, @RequestBody @Valid RequestBoardInfo requestBoardInfo) {
         boardService.checkPassword(id, requestBoardInfo);
         return ResponseEntity.ok("비밀번호가 일치합니다.");
     }
 
     @PostMapping("/api/board/{id}/update")
-    public ResponseEntity<Object> updateBoard(@PathVariable Long id, @RequestBody RequestBoard requestBoard) {
-        boardService.updateBoard(id, requestBoard);
+    public ResponseEntity<Object> updateBoard(@PathVariable Long id, @RequestBody RequestBoardEdit requestBoardEdit) {
+        boardService.updateBoard(id, requestBoardEdit);
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 }
