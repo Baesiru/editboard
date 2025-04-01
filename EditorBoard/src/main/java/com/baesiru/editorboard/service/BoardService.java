@@ -3,6 +3,8 @@ package com.baesiru.editorboard.service;
 import com.baesiru.editorboard.dto.board.*;
 import com.baesiru.editorboard.entity.Board;
 import com.baesiru.editorboard.entity.Image;
+import com.baesiru.editorboard.exception.board.BoardErrorCode;
+import com.baesiru.editorboard.exception.board.BoardNotFoundException;
 import com.baesiru.editorboard.repository.BoardRepository;
 import com.baesiru.editorboard.repository.ImageRepository;
 import org.modelmapper.ModelMapper;
@@ -51,7 +53,7 @@ public class BoardService {
     public ResponseBoard getBoard(Long id) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         Long viewCount = board.get().getViewCount();
         board.get().setViewCount(viewCount + 1L);
         boardRepository.save(board.get());
