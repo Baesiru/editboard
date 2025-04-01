@@ -2,6 +2,7 @@ package com.baesiru.editorboard.controller;
 
 import com.baesiru.editorboard.dto.comment.RequestComment;
 import com.baesiru.editorboard.dto.comment.RequestCommentInfo;
+import com.baesiru.editorboard.dto.comment.RequestCommentUpdate;
 import com.baesiru.editorboard.dto.comment.ResponseComment;
 import com.baesiru.editorboard.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class CommentController {
     }
 
     @PostMapping("/api/comment/{commentId}/update")
-    public ResponseEntity<Object> updateComment(@PathVariable Long commentId, @RequestBody RequestComment requestComment) {
-        commentService.updateComment(commentId, requestComment);
+    public ResponseEntity<Object> updateComment(@PathVariable Long commentId, @RequestBody RequestCommentUpdate requestCommentUpdate) {
+        commentService.updateComment(commentId, requestCommentUpdate);
         return ResponseEntity.ok("댓글이 수정되었습니다.");
     }
 }

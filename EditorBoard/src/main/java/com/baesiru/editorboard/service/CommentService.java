@@ -3,6 +3,7 @@ package com.baesiru.editorboard.service;
 import com.baesiru.editorboard.dto.board.RequestBoardInfo;
 import com.baesiru.editorboard.dto.comment.RequestComment;
 import com.baesiru.editorboard.dto.comment.RequestCommentInfo;
+import com.baesiru.editorboard.dto.comment.RequestCommentUpdate;
 import com.baesiru.editorboard.dto.comment.ResponseComment;
 import com.baesiru.editorboard.entity.Board;
 import com.baesiru.editorboard.entity.Comment;
@@ -71,16 +72,16 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long commentId, RequestComment requestComment) {
+    public void updateComment(Long commentId, RequestCommentUpdate requestCommentUpdate) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isEmpty()) {
             throw new IllegalArgumentException("댓글이 존재하지 않습니다.");
         }
         Comment newComment = comment.get();
-        if (!newComment.getPassword().equals(requestComment.getPassword())) {
+        if (!newComment.getPassword().equals(requestCommentUpdate.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        newComment.setContent(requestComment.getContent());
+        newComment.setContent(requestCommentUpdate.getContent());
         newComment.setUpdatedAt(LocalDateTime.now());
         commentRepository.save(newComment);
     }
