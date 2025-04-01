@@ -45,8 +45,8 @@ public class BoardController {
     }
 
     @PostMapping("/api/board/{id}/update")
-    public ResponseEntity<Object> updateBoard(@PathVariable Long id, @RequestBody RequestBoardEdit requestBoardEdit) {
-        boardService.updateBoard(id, requestBoardEdit);
+    public ResponseEntity<Object> updateBoard(@PathVariable Long id, @RequestBody RequestBoardUpdate requestBoardUpdate) {
+        boardService.updateBoard(id, requestBoardUpdate);
         return ResponseEntity.ok("수정이 완료되었습니다.");
     }
 }

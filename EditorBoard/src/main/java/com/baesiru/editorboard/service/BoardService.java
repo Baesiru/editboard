@@ -81,16 +81,16 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateBoard(Long id, RequestBoardEdit requestBoardEdit) {
+    public void updateBoard(Long id, RequestBoardUpdate requestBoardUpdate) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
             throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
         Board newBoard = board.get();
-        if (!newBoard.getPassword().equals(requestBoardEdit.getPassword())) {
+        if (!newBoard.getPassword().equals(requestBoardUpdate.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
-        newBoard.setTitle(requestBoardEdit.getTitle());
-        newBoard.setContent(requestBoardEdit.getContent());
+        newBoard.setTitle(requestBoardUpdate.getTitle());
+        newBoard.setContent(requestBoardUpdate.getContent());
         newBoard.setUpdatedAt(LocalDateTime.now());
         boardRepository.save(newBoard);
 
