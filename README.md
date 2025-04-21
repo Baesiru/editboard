@@ -15,5 +15,5 @@ Wysiwyg Editor를 통해 태그가 적용된 게시글과 다중 이미지를 �
 ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![Static Badge](https://img.shields.io/badge/ToastUI-9cf)
 
-## :rocket: 문제 해결 과정
-- [Wiziwig 에디터에서 업로드된 이미지 관리 문제](https://velog.io/@junhwan1124/Wiziwig-%EC%97%90%EB%94%94%ED%84%B0%EC%97%90%EC%84%9C-%EC%97%85%EB%A1%9C%EB%93%9C%EB%90%9C-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EA%B4%80%EB%A6%AC-%EB%AC%B8%EC%A0%9C)
+## 포트폴리오
+- [EditBoard 포트폴리오](https://velog.io/@junhwan1124/EditBoard-%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4)
