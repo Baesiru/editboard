@@ -16,7 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -55,6 +59,11 @@ public class BoardService {
     }
 
     @Transactional
+    @Retryable(
+            value = ObjectOptimisticLockingFailureException.class,
+            maxAttempts = 3,
+            backoff = @Backoff(delay = 200, maxDelay = 1000, multiplier = 2)
+    )
     public ResponseBoard getBoard(Long id) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
@@ -63,6 +72,17 @@ public class BoardService {
         Long viewCount = newBoard.getViewCount();
         newBoard.setViewCount(viewCount + 1L);
         boardRepository.save(newBoard);
+        ResponseBoard responseBoard = modelMapper.map(newBoard, ResponseBoard.class);
+        return responseBoard;
+    }
+
+    @Transactional
+    public ResponseBoard getBoardByPessimisticLock(Long id) {
+        Optional<Board> board = boardRepository.findByIdWithPessimisticLock(id);
+        if (board.isEmpty())
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
+        Board newBoard = board.get();
+        newBoard.setViewCount(newBoard.getViewCount() + 1L);
         ResponseBoard responseBoard = modelMapper.map(newBoard, ResponseBoard.class);
         return responseBoard;
     }

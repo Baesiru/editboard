@@ -26,4 +26,6 @@ public class Board {
     private Long viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+//    @Version
+//    private Long version = 0L;
 }

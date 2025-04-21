@@ -28,7 +28,7 @@ public class BoardController {
 
     @GetMapping("/api/board/{id}")
     public ResponseEntity<Object> getBoard(@PathVariable Long id) {
-        ResponseBoard responseBoard = boardService.getBoard(id);
+        ResponseBoard responseBoard = boardService.getBoardByPessimisticLock(id);
         return ResponseEntity.ok(responseBoard);
     }
 
