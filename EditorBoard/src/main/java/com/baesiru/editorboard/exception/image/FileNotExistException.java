@@ -1,32 +1,32 @@
-package com.baesiru.editorboard.exception.board;
+package com.baesiru.editorboard.exception.image;
 
 import com.baesiru.editorboard.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class BoardNotFoundException extends RuntimeException {
+public class FileNotExistException extends RuntimeException {
     private final ErrorCode errorCode;
     private final String description;
 
-    public BoardNotFoundException(ErrorCode errorCode) {
+    public FileNotExistException(ErrorCode errorCode) {
         super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.description = errorCode.getDescription();
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, String errorDescription) {
+    public FileNotExistException(ErrorCode errorCode, String errorDescription) {
         this.errorCode = errorCode;
         this.description = errorDescription;
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, Throwable throwable) {
+    public FileNotExistException(ErrorCode errorCode, Throwable throwable) {
         super(throwable);
         this.errorCode = errorCode;
         this.description = errorCode.getDescription();
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, Throwable throwable,
-                                   String errorDescription) {
+    public FileNotExistException(ErrorCode errorCode, Throwable throwable,
+                                  String errorDescription) {
         super(throwable);
         this.errorCode = errorCode;
         this.description = errorDescription;

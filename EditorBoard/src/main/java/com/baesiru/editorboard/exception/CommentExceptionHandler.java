@@ -1,7 +1,8 @@
 package com.baesiru.editorboard.exception;
 
-import com.baesiru.editorboard.exception.board.BoardNotFoundException;
-import com.baesiru.editorboard.exception.board.WrongBoardPasswordException;
+import com.baesiru.editorboard.exception.comment.CommentNotFoundException;
+import com.baesiru.editorboard.exception.comment.ParentCommentNotFoundException;
+import com.baesiru.editorboard.exception.comment.WrongCommentPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,16 +11,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @RestControllerAdvice
 @Slf4j
-public class BoardExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(BoardNotFoundException.class)
-    public ResponseEntity<?> handleBoardNotFoundException(BoardNotFoundException e) {
+public class CommentExceptionHandler extends ResponseEntityExceptionHandler {
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<?> handleCommentNotFoundException(CommentNotFoundException e) {
         log.warn("", e);
         ErrorCode errorCode = e.getErrorCode();
         return handleExceptionInternal(errorCode);
     }
 
-    @ExceptionHandler(WrongBoardPasswordException.class)
-    public ResponseEntity<?> handleWrongBoardPasswordException(WrongBoardPasswordException e) {
+    @ExceptionHandler(ParentCommentNotFoundException.class)
+    public ResponseEntity<?> handleParentCommentNotFoundException(ParentCommentNotFoundException e) {
+        log.warn("", e);
+        ErrorCode errorCode = e.getErrorCode();
+        return handleExceptionInternal(errorCode);
+    }
+
+    @ExceptionHandler(WrongCommentPasswordException.class)
+    public ResponseEntity<?> handleWrongCommentPasswordException(WrongCommentPasswordException e) {
         log.warn("", e);
         ErrorCode errorCode = e.getErrorCode();
         return handleExceptionInternal(errorCode);

@@ -5,6 +5,9 @@ import com.baesiru.editorboard.entity.Board;
 import com.baesiru.editorboard.entity.Image;
 import com.baesiru.editorboard.exception.board.BoardErrorCode;
 import com.baesiru.editorboard.exception.board.BoardNotFoundException;
+import com.baesiru.editorboard.exception.board.WrongBoardPasswordException;
+import com.baesiru.editorboard.exception.image.ImageErrorCode;
+import com.baesiru.editorboard.exception.image.ImageNotFoundException;
 import com.baesiru.editorboard.repository.BoardRepository;
 import com.baesiru.editorboard.repository.ImageRepository;
 import org.modelmapper.ModelMapper;
@@ -77,19 +80,19 @@ public class BoardService {
     public void checkPassword(Long id, RequestBoardInfo requestBoardInfo) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         if (!board.get().getPassword().equals(requestBoardInfo.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new WrongBoardPasswordException(BoardErrorCode.WRONG_BOARD_PASSWORD);
     }
 
     @Transactional
     public void updateBoard(Long id, RequestBoardUpdate requestBoardUpdate) {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         Board newBoard = board.get();
         if (!newBoard.getPassword().equals(requestBoardUpdate.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new WrongBoardPasswordException(BoardErrorCode.WRONG_BOARD_PASSWORD);
         }
         newBoard.setTitle(requestBoardUpdate.getTitle());
         newBoard.setContent(requestBoardUpdate.getContent());
@@ -131,7 +134,7 @@ public class BoardService {
         for (String filename : filenames) {
             Optional<Image> image = imageRepository.findByFilename(filename);
             if (image.isEmpty()) {
-                throw new IllegalArgumentException("이미지가 존재하지 않습니다.");
+                throw new ImageNotFoundException(ImageErrorCode.IMAGE_NOT_FOUND);
             }
             image.get().setBoardId(boardId);
             imageRepository.save(image.get());

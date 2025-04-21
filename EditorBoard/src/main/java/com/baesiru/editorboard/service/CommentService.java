@@ -7,6 +7,12 @@ import com.baesiru.editorboard.dto.comment.RequestCommentUpdate;
 import com.baesiru.editorboard.dto.comment.ResponseComment;
 import com.baesiru.editorboard.entity.Board;
 import com.baesiru.editorboard.entity.Comment;
+import com.baesiru.editorboard.exception.board.BoardErrorCode;
+import com.baesiru.editorboard.exception.board.BoardNotFoundException;
+import com.baesiru.editorboard.exception.comment.CommentErrorCode;
+import com.baesiru.editorboard.exception.comment.CommentNotFoundException;
+import com.baesiru.editorboard.exception.comment.ParentCommentNotFoundException;
+import com.baesiru.editorboard.exception.comment.WrongCommentPasswordException;
 import com.baesiru.editorboard.repository.BoardRepository;
 import com.baesiru.editorboard.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +39,7 @@ public class CommentService {
     public void createComment(Long boardId, RequestComment requestComment) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (board.isEmpty()) {
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         }
 
         log.info(requestComment.toString());
@@ -42,7 +48,7 @@ public class CommentService {
         if (requestComment.getParentId() != null) {
             Optional<Comment> parentComment = commentRepository.findById(requestComment.getParentId());
             if (parentComment.isEmpty()) {
-                throw new IllegalArgumentException("상위 댓글이 존재하지 않습니다.");
+                throw new ParentCommentNotFoundException(CommentErrorCode.PARENT_COMMENT_NOT_FOUND);
             }
             comment.setDepth(parentComment.get().getDepth() + 1L);
         }
@@ -58,7 +64,7 @@ public class CommentService {
     public List<ResponseComment> getComment(Long boardId) {
         Optional<Board> board = boardRepository.findById(boardId);
         if (board.isEmpty()) {
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         }
 
         List<ResponseComment> responseComments = commentRepository.findAllByBoardIdOrdered(boardId);
@@ -75,11 +81,11 @@ public class CommentService {
     public void updateComment(Long commentId, RequestCommentUpdate requestCommentUpdate) {
         Optional<Comment> comment = commentRepository.findById(commentId);
         if (comment.isEmpty()) {
-            throw new IllegalArgumentException("댓글이 존재하지 않습니다.");
+            throw new CommentNotFoundException(CommentErrorCode.COMMENT_NOT_FOUND);
         }
         Comment newComment = comment.get();
         if (!newComment.getPassword().equals(requestCommentUpdate.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new WrongCommentPasswordException(CommentErrorCode.WRONG_COMMENT_PASSWORD);
         }
         newComment.setContent(requestCommentUpdate.getContent());
         newComment.setUpdatedAt(LocalDateTime.now());
@@ -89,8 +95,7 @@ public class CommentService {
     public void checkPassword(Long id, RequestCommentInfo requestCommentInfo) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isEmpty())
-            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
+            throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         if (!comment.get().getPassword().equals(requestCommentInfo.getPassword()))
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-    }
+            throw new WrongCommentPasswordException(CommentErrorCode.WRONG_COMMENT_PASSWORD);    }
 }

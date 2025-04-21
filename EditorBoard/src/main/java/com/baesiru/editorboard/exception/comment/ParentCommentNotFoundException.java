@@ -1,32 +1,32 @@
-package com.baesiru.editorboard.exception.board;
+package com.baesiru.editorboard.exception.comment;
 
 import com.baesiru.editorboard.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class BoardNotFoundException extends RuntimeException {
+public class ParentCommentNotFoundException extends RuntimeException {
     private final ErrorCode errorCode;
     private final String description;
 
-    public BoardNotFoundException(ErrorCode errorCode) {
+    public ParentCommentNotFoundException(ErrorCode errorCode) {
         super(errorCode.getDescription());
         this.errorCode = errorCode;
         this.description = errorCode.getDescription();
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, String errorDescription) {
+    public ParentCommentNotFoundException(ErrorCode errorCode, String errorDescription) {
         this.errorCode = errorCode;
         this.description = errorDescription;
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, Throwable throwable) {
+    public ParentCommentNotFoundException(ErrorCode errorCode, Throwable throwable) {
         super(throwable);
         this.errorCode = errorCode;
         this.description = errorCode.getDescription();
     }
 
-    public BoardNotFoundException(ErrorCode errorCode, Throwable throwable,
-                                   String errorDescription) {
+    public ParentCommentNotFoundException(ErrorCode errorCode, Throwable throwable,
+                                    String errorDescription) {
         super(throwable);
         this.errorCode = errorCode;
         this.description = errorDescription;
