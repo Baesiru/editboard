@@ -10,6 +10,7 @@ import com.baesiru.editorboard.exception.image.ImageErrorCode;
 import com.baesiru.editorboard.exception.image.ImageNotFoundException;
 import com.baesiru.editorboard.repository.BoardRepository;
 import com.baesiru.editorboard.repository.ImageRepository;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -46,6 +47,7 @@ public class BoardService {
         board.setViewCount(0L);
         board.setCreatedAt(LocalDateTime.now());
         board.setUpdatedAt(LocalDateTime.now());
+        board.setPassword(BCrypt.hashpw(requestBoard.getPassword(), BCrypt.gensalt()));
         board = boardRepository.save(board);
         Long boardId = board.getId();
         List<String> filenames = filenameExtractor(board.getContent());
@@ -57,10 +59,11 @@ public class BoardService {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
             throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
-        Long viewCount = board.get().getViewCount();
-        board.get().setViewCount(viewCount + 1L);
-        boardRepository.save(board.get());
-        ResponseBoard responseBoard = modelMapper.map(board.get(), ResponseBoard.class);
+        Board newBoard = board.get();
+        Long viewCount = newBoard.getViewCount();
+        newBoard.setViewCount(viewCount + 1L);
+        boardRepository.save(newBoard);
+        ResponseBoard responseBoard = modelMapper.map(newBoard, ResponseBoard.class);
         return responseBoard;
     }
 
@@ -81,7 +84,7 @@ public class BoardService {
         Optional<Board> board = boardRepository.findById(id);
         if (board.isEmpty())
             throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
-        if (!board.get().getPassword().equals(requestBoardInfo.getPassword()))
+        if (!BCrypt.checkpw(requestBoardInfo.getPassword(), board.get().getPassword()))
             throw new WrongBoardPasswordException(BoardErrorCode.WRONG_BOARD_PASSWORD);
     }
 
@@ -91,7 +94,7 @@ public class BoardService {
         if (board.isEmpty())
             throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
         Board newBoard = board.get();
-        if (!newBoard.getPassword().equals(requestBoardUpdate.getPassword())) {
+        if (!BCrypt.checkpw(requestBoardUpdate.getPassword(), newBoard.getPassword())) {
             throw new WrongBoardPasswordException(BoardErrorCode.WRONG_BOARD_PASSWORD);
         }
         newBoard.setTitle(requestBoardUpdate.getTitle());

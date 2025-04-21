@@ -37,7 +37,7 @@ public class CommentController {
 
     @PostMapping("/api/comment/{commentId}/check")
     public ResponseEntity<Object> checkComment(@PathVariable Long commentId, @RequestBody @Valid RequestCommentInfo requestCommentInfo) {
-        commentService.checkPassword(commentId, requestCommentInfo);
+        commentService.checkPassword(commentId, requestCommentInfo.getPassword());
         return ResponseEntity.ok("비밀번호가 일치합니다.");
     }
 

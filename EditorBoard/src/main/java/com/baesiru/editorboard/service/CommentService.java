@@ -16,6 +16,7 @@ import com.baesiru.editorboard.exception.comment.WrongCommentPasswordException;
 import com.baesiru.editorboard.repository.BoardRepository;
 import com.baesiru.editorboard.repository.CommentRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,7 @@ public class CommentService {
         else {
             comment.setDepth(0L);
         }
+        comment.setPassword(BCrypt.hashpw(comment.getPassword(), BCrypt.gensalt()));
         comment.setBoardId(boardId);
         comment.setCreatedAt(LocalDateTime.now());
         comment.setUpdatedAt(LocalDateTime.now());
@@ -73,7 +75,7 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId, RequestCommentInfo requestCommentInfo) {
-        checkPassword(commentId, requestCommentInfo);
+        checkPassword(commentId, requestCommentInfo.getPassword());
         commentRepository.deleteById(commentId);
     }
 
@@ -84,18 +86,16 @@ public class CommentService {
             throw new CommentNotFoundException(CommentErrorCode.COMMENT_NOT_FOUND);
         }
         Comment newComment = comment.get();
-        if (!newComment.getPassword().equals(requestCommentUpdate.getPassword())) {
-            throw new WrongCommentPasswordException(CommentErrorCode.WRONG_COMMENT_PASSWORD);
-        }
+        checkPassword(commentId, requestCommentUpdate.getPassword());
         newComment.setContent(requestCommentUpdate.getContent());
         newComment.setUpdatedAt(LocalDateTime.now());
         commentRepository.save(newComment);
     }
 
-    public void checkPassword(Long id, RequestCommentInfo requestCommentInfo) {
+    public void checkPassword(Long id, String currPassword) {
         Optional<Comment> comment = commentRepository.findById(id);
         if (comment.isEmpty())
             throw new BoardNotFoundException(BoardErrorCode.BOARD_NOT_FOUND);
-        if (!comment.get().getPassword().equals(requestCommentInfo.getPassword()))
+        if (!BCrypt.checkpw(currPassword, comment.get().getPassword()))
             throw new WrongCommentPasswordException(CommentErrorCode.WRONG_COMMENT_PASSWORD);    }
 }
