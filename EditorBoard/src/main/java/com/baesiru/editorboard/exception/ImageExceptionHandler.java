@@ -2,6 +2,7 @@ package com.baesiru.editorboard.exception;
 
 import com.baesiru.editorboard.exception.image.FileNotExistException;
 import com.baesiru.editorboard.exception.image.FolderCreationException;
+import com.baesiru.editorboard.exception.image.ImageDeleteFailException;
 import com.baesiru.editorboard.exception.image.ImageNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,13 @@ public class ImageExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FolderCreationException.class)
     public ResponseEntity<?> handleFileNotExistException(FolderCreationException e) {
+        log.warn("", e);
+        ErrorCode errorCode = e.getErrorCode();
+        return handleExceptionInternal(errorCode);
+    }
+
+    @ExceptionHandler(ImageDeleteFailException.class)
+    public ResponseEntity<?> handleImageDeleteFailException(ImageDeleteFailException e) {
         log.warn("", e);
         ErrorCode errorCode = e.getErrorCode();
         return handleExceptionInternal(errorCode);

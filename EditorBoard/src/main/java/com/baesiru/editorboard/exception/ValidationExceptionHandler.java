@@ -8,11 +8,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
 @Slf4j
-public class ValidationExceptionHandler extends ResponseEntityExceptionHandler {
+public class ValidationExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValidException(
             MethodArgumentNotValidException e) {
